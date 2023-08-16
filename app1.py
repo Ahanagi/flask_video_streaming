@@ -1,29 +1,30 @@
-import datetime,time
-from flask import Blueprint, Flask, render_template, request,Response
+import datetime
+import time
+from flask import Flask, render_template,Response,request
 import cv2 as cv
 
-site = Blueprint('site', __name__, template_folder='templates')
 
 app1 = Flask(__name__)
 
-video_path6 =  'rtsp://104.194.11.25:554/livedemocam'
-video_path7 = 'rtsp://104.194.11.25:554/livedemocam'
-video_path8 = 'rtsp://104.194.11.25:554/livedemocam'
-video_path9 = 'rtsp://104.194.11.25:554/livedemocam'
+video_path1 = 'rtsp://104.194.11.25:554/livedemocam'
+video_path2 = 'rtsp://104.194.11.25:554/livedemocam'
+video_path3 = 'rtsp://104.194.11.25:554/livedemocam'
+video_path4 = 'rtsp://104.194.11.25:554/livedemocam'
+video_path5 = 'rtsp://104.194.11.25:554/livedemocam'
 
 @app1.route('/')
 def index():
     return render_template('Side_bar.html')
-    
+
 def generate_frames(video_path):
     cap = cv.VideoCapture(video_path)
 
     while True:
         ret, frame = cap.read()
-        
+       
         if not ret:
             break
-        
+       
         resize = cv.resize(frame, (1000, 500))
 
         number_of_frames = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
@@ -46,30 +47,31 @@ def generate_frames(video_path):
                            1, (198, 249, 1), 2, cv.LINE_AA)
 
         ret, frame = cv.imencode('.jpg', frame)
-
+       
         frame_bytes = frame.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-        
-
-          
+       
+   
 @app1.route('/video0')
-def video5():
-    return Response(generate_frames(video_path6), mimetype='multipart/x-mixed-replace; boundary=frame')
+def video0():
+    return Response(generate_frames(video_path1), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app1.route('/video1')
-def video6():
-    return Response(generate_frames(video_path7), mimetype='multipart/x-mixed-replace; boundary=frame')
+def video1():
+    return Response(generate_frames(video_path2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app1.route('/video2')
-def video7():
-    return Response(generate_frames(video_path8), mimetype='multipart/x-mixed-replace; boundary=frame')
+def video2():
+    return Response(generate_frames(video_path3), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app1.route('/video3')
-def video8():
-    return Response(generate_frames(video_path9), mimetype='multipart/x-mixed-replace; boundary=frame')
+def video3():
+    return Response(generate_frames(video_path4), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app1.route('/video4')
+def video4():
+    return Response(generate_frames(video_path5), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app1.run(debug=True, host="127.0.0.1", port=2001)
-    
-
+    app1.run(debug=True, host="127.0.0.1", port=2000)
