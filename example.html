@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Video Display</title>
+  <style>
+    #videoContainer {
+      width: 640px;
+      height: 360px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <a href="#" id="loadVideo">Load Next Video</a>
+  <div id="videoContainer"></div>
+
+  <script>
+    const videoContainer = document.getElementById('videoContainer');
+    const loadVideoButton = document.getElementById('loadVideo');
+    
+    const videoUrls = [
+      'video1.mp4',
+      'video2.mp4',
+      'video3.mp4'
+      // Add more video URLs here
+    ];
+    
+    let currentVideoIndex = 0;
+    
+    loadVideoButton.addEventListener('click', () => {
+      if (currentVideoIndex < videoUrls.length) {
+        const videoUrl = videoUrls[currentVideoIndex];
+        const videoElement = document.createElement('video');
+        videoElement.src = videoUrl;
+        videoElement.controls = true;
+        videoContainer.appendChild(videoElement);
+        
+        currentVideoIndex++;
+      }
+    });
+  </script>
+</body>
+</html>
